@@ -105,51 +105,6 @@ st.subheader("💬 Your Support Companion")
 # INPUT BOX
 user_input = st.text_input("Talk to me... I'm here for you 🤍", key="input_box")
 
-# -----------------------------
-# CHATBOT FUNCTION
-# -----------------------------
-def chatbot_reply(user_text):
-    # Convert chat history into AI format
-    messages = [
-        {"role": "system", "content": "You are a kind, supportive mental health companion. Speak gently and naturally like a human."}
-    ]
-
-    # Add previous messages
-    for speaker, msg in st.session_state.chat_history:
-        if speaker == "You":
-            messages.append({"role": "user", "content": msg})
-        else:
-            messages.append({"role": "assistant", "content": msg})
-
-    # Add current user input
-    messages.append({"role": "user", "content": user_text})
-
-    # Call AI
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=messages,
-        temperature=0.7
-    )
-
-    return response.choices[0].message.content
-    
-if st.button("Send 💬"):
-    if user_input and user_input.strip() != "":
-        response = chatbot_reply(user_input)
-
-        st.session_state.chat_history.append(("You", user_input))
-        st.session_state.chat_history.append(("Companion", response))
-        
-# -----------------------------
-# DISPLAY CHAT
-# -----------------------------
-
-for speaker, msg in st.session_state.chat_history:
-    if speaker == "You":
-        st.write(f"🧍‍♀️ **You:** {msg}")
-    else:
-        st.write(f"🤖 **Companion:** {msg}")
-
 # ----------------------------
 # VISUALIZATION DASHBOARD
 # ----------------------------
